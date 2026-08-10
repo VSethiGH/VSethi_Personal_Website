@@ -1,0 +1,819 @@
+/* =========================================================================
+   PORTFOLIO SITE STYLESHEET
+   Style direction: OMORI title-screen look — pure white space, solid black
+   boxes, a soft hand-drawn font, and a gentle letter-by-letter wobble on
+   headings. Everything is deliberately simple: flat colors, no gradients,
+   no shadows-for-the-sake-of-shadows.
+
+   HOW TO RECOLOR: change the variables below. Everything else refers to
+   them, so you only need to edit this one spot.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand:wght@400&display=swap');
+
+:root {
+  --black: #111111;
+  --white: #ffffff;
+  --gray: #6e6e6e;
+  --light-gray: #ececec;
+  --accent: #111111; /* keep monochrome to stay true to the reference look */
+
+  --font-display: 'Gochi Hand', cursive;   /* headings / logo / nav — hand-drawn */
+  --font-body: 'Patrick Hand', cursive;    /* body copy — still hand-drawn but calmer */
+
+  --box-radius: 14px;
+  --border-thick: 3px;
+  --max-width: 980px;
+}
+
+/* ---------------------------------------------------------------------
+   DARK MODE — the lightbulb toggle (see topbar) adds/removes this class
+   on <html>. Since every color in this file is one of the two variables
+   below, flipping them flips the ENTIRE site: white becomes black, black
+   becomes white. Nothing else needs to change.
+--------------------------------------------------------------------- */
+html.dark-mode {
+  --black: #ffffff;
+  --white: #111111;
+  --gray: #a3a3a3;
+  --light-gray: #2a2a2a;
+  --accent: #ffffff;
+}
+
+html,
+body,
+.home-box,
+.nav-pill,
+.icon-link,
+.back-arrow,
+.about-box,
+.accordion-section,
+.project-card,
+.resume-box,
+.download-btn,
+.media-trigger img,
+.media-trigger video,
+.face-frame {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 19px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  flex: 1;
+}
+
+/* ---------------------------------------------------------------------
+   TOP BAR — sits on every page. Left = back/home + page nav pills.
+   Right = LinkedIn / Email links.
+--------------------------------------------------------------------- */
+.topbar {
+  width: 100%;
+  padding: 18px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-self: start;
+}
+
+.back-arrow {
+  font-family: var(--font-display);
+  font-size: 22px;
+  background: var(--black);
+  color: var(--white);
+  border: var(--border-thick) solid var(--black);
+  border-radius: 999px;
+  padding: 4px 16px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.back-arrow:hover { transform: translateX(-4px); }
+
+.nav-pill {
+  font-family: var(--font-display);
+  font-size: 20px;
+  background: var(--white);
+  color: var(--black);
+  border: var(--border-thick) solid var(--black);
+  border-radius: 999px;
+  padding: 3px 16px 5px;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.nav-pill:hover,
+.nav-pill.active {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: end;
+}
+
+.icon-link {
+  font-family: var(--font-display);
+  font-size: 19px;
+  border: var(--border-thick) solid var(--black);
+  border-radius: 999px;
+  padding: 3px 14px 5px;
+  background: var(--white);
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.icon-link:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------------------
+   LIGHTBULB — the light/dark mode toggle, sitting dead-center in the
+   topbar, OMORI pull-string style.
+--------------------------------------------------------------------- */
+.theme-toggle {
+  justify-self: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.bulb-icon {
+  width: 34px;
+  height: 34px;
+  overflow: visible;
+}
+
+.bulb-glass {
+  fill: var(--white);
+  stroke: var(--black);
+  stroke-width: 3;
+  transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease;
+}
+.bulb-filament {
+  fill: none;
+  stroke: var(--black);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.25s ease;
+}
+.bulb-base rect,
+.bulb-base-line {
+  stroke: var(--black);
+  transition: stroke 0.25s ease;
+}
+.bulb-base rect {
+  fill: var(--white);
+  stroke-width: 3;
+}
+.bulb-base-line {
+  stroke-width: 2;
+}
+
+/* LIGHT MODE (default): bulb looks lit — warm fill + soft glow */
+.bulb-glass {
+  fill: #fff6c8;
+  filter: drop-shadow(0 0 6px rgba(255, 221, 87, 0.9));
+}
+
+/* DARK MODE: bulb looks switched off — flat, no glow */
+html.dark-mode .bulb-glass {
+  fill: var(--white);
+  filter: none;
+}
+
+.theme-toggle:hover .bulb-icon {
+  animation: bulb-wiggle 0.4s ease;
+}
+@keyframes bulb-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle:hover .bulb-icon { animation: none; }
+}
+
+/* ---------------------------------------------------------------------
+   WOBBLE TEXT — headings get wrapped into per-letter spans (see script.js)
+   and each letter gently bobs up and down, staggered, like the OMORI title.
+--------------------------------------------------------------------- */
+.wobble {
+  font-family: var(--font-display);
+  display: inline-block;
+}
+.wobble .letter {
+  display: inline-block;
+  animation: bob 2.4s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wobble .letter { animation: none; }
+  .back-arrow:hover, .nav-pill:hover, .icon-link:hover { transform: none; }
+}
+
+/* ---------------------------------------------------------------------
+   HOME PAGE
+--------------------------------------------------------------------- */
+.home-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px 24px 60px;
+}
+
+.face-frame {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: var(--border-thick) solid var(--black);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--light-gray);
+  margin-bottom: 22px;
+}
+.face-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.face-placeholder {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--gray);
+  padding: 18px;
+  line-height: 1.4;
+}
+
+.home-title {
+  font-size: 52px;
+  margin: 0 0 6px;
+}
+.home-subtitle {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--gray);
+  margin: 0 0 40px;
+}
+
+.home-boxes {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.home-box {
+  background: var(--black);
+  color: var(--white);
+  border-radius: var(--box-radius);
+  padding: 34px 16px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-thick) solid var(--black);
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.home-box:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: translateY(-4px);
+}
+
+@media (max-width: 640px) {
+  .home-boxes { grid-template-columns: 1fr; }
+  .home-title { font-size: 40px; }
+}
+
+/* ---------------------------------------------------------------------
+   PAGE HEADER (About / Projects / Resume)
+--------------------------------------------------------------------- */
+.page-header {
+  text-align: center;
+  margin: 10px 0 36px;
+}
+.page-header h1 {
+  font-size: 44px;
+  margin: 0;
+}
+.page-header p {
+  color: var(--gray);
+  font-family: var(--font-body);
+  font-size: 18px;
+  margin: 6px 0 0;
+}
+
+/* ---------------------------------------------------------------------
+   ABOUT PAGE — grid of black-topped boxes
+--------------------------------------------------------------------- */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding-bottom: 60px;
+}
+@media (max-width: 700px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+.about-box {
+  border: var(--border-thick) solid var(--black);
+  border-radius: var(--box-radius);
+  overflow: hidden;
+  background: var(--white);
+}
+.about-box-title {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 24px;
+  padding: 10px 18px 12px;
+}
+.about-box-body {
+  padding: 16px 20px 20px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.5;
+}
+.about-box-body ul { margin: 6px 0 0; padding-left: 20px; }
+.about-box-body li { margin-bottom: 4px; }
+
+/* ---------------------------------------------------------------------
+   PROJECTS PAGE — accordion sections + left-text/right-media cards
+--------------------------------------------------------------------- */
+.accordion { padding-bottom: 60px; }
+
+.accordion-section {
+  border: var(--border-thick) solid var(--black);
+  border-radius: var(--box-radius);
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.accordion-toggle {
+  width: 100%;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 24px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.accordion-toggle .caret {
+  transition: transform 0.2s ease;
+  font-size: 20px;
+}
+.accordion-section.open .accordion-toggle .caret {
+  transform: rotate(90deg);
+}
+
+.accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: var(--white);
+}
+.accordion-section.open .accordion-panel {
+  max-height: 4000px; /* generous cap so content isn't clipped */
+}
+
+.panel-inner {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* -- a single project "card": text on the left, media on the right -- */
+.project-card {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  padding: 16px;
+  align-items: center;
+}
+@media (max-width: 700px) {
+  .project-card { grid-template-columns: 1fr; }
+}
+
+.project-text h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin: 0 0 6px;
+}
+.project-text .project-meta {
+  font-family: var(--font-body);
+  color: var(--gray);
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.project-text p {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.project-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Clickable thumbnail wrapper (image / video / slide-deck preview) */
+.media-trigger {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  background: none;
+}
+.media-trigger img,
+.media-trigger video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  border: 2px solid var(--black);
+}
+.zoom-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  opacity: 0.88;
+  pointer-events: none;
+  transition: transform 0.15s ease;
+}
+.media-trigger:hover .zoom-hint,
+.media-trigger:focus-visible .zoom-hint {
+  transform: scale(1.08);
+}
+.media-trigger:focus-visible {
+  outline: 3px solid var(--black);
+  outline-offset: 3px;
+}
+
+/* Thumbnail shown on a pptx/slides card when no slide images exist yet */
+.file-thumb {
+  width: 100%;
+  min-height: 140px;
+  max-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--light-gray);
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  color: var(--black);
+  font-family: var(--font-display);
+  font-size: 16px;
+}
+.file-thumb .file-icon { font-size: 34px; }
+
+.project-media iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  border: 2px solid var(--black);
+}
+.media-placeholder {
+  width: 100%;
+  min-height: 140px;
+  border: 2px dashed var(--gray);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Fallback link for pptx files with no exported slide images yet */
+.media-file-link {
+  width: 100%;
+  min-height: 140px;
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--black);
+  font-family: var(--font-display);
+  font-size: 18px;
+  text-align: center;
+  padding: 16px;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.media-file-link .file-icon { font-size: 30px; }
+.media-file-link:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------------------
+   LIGHTBOX — full-screen popup for viewing media larger
+--------------------------------------------------------------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 60px 20px;
+}
+.lightbox.open { display: flex; }
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 17, 17, 0.9);
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 1;
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-body {
+  max-width: 90vw;
+  max-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-body img,
+.lightbox-body video {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 10px;
+  border: var(--border-thick) solid var(--white);
+  display: block;
+}
+.lightbox-body iframe {
+  width: min(90vw, 960px);
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 10px;
+  background: var(--white);
+}
+
+/* pptx/slides content inside the lightbox: media on top, optional
+   download button underneath */
+.lightbox-slide-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.lightbox-no-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 17px;
+  background: var(--black);
+  border: var(--border-thick) solid var(--white);
+  border-radius: 10px;
+  padding: 50px 40px;
+  max-width: 420px;
+  text-align: center;
+}
+.lightbox-no-preview .file-icon { font-size: 46px; }
+.lightbox-no-preview p { margin: 0; }
+
+.lightbox-download {
+  font-family: var(--font-display);
+  font-size: 18px;
+  background: var(--white);
+  color: var(--black);
+  border: var(--border-thick) solid var(--white);
+  border-radius: 999px;
+  padding: 8px 22px 10px;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.lightbox-download:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.lightbox-office-embed {
+  width: min(90vw, 900px);
+  height: min(75vh, 620px);
+  border: var(--border-thick) solid var(--white);
+  border-radius: 10px;
+  background: var(--white);
+}
+.lightbox-pdf-embed {
+  width: min(90vw, 760px);
+  height: min(85vh, 800px);
+  border: var(--border-thick) solid var(--white);
+  border-radius: 10px;
+  background: var(--white);
+}
+.lightbox-embed-note {
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  max-width: 480px;
+  text-align: center;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -50px;
+  right: -6px;
+  background: var(--white);
+  color: var(--black);
+  border: var(--border-thick) solid var(--white);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: var(--font-display);
+}
+
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--white);
+  color: var(--black);
+  border: var(--border-thick) solid var(--white);
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-arrow.show { display: flex; }
+.lightbox-prev { left: -66px; }
+.lightbox-next { right: -66px; }
+
+.lightbox-counter {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  display: none;
+}
+.lightbox-counter.show { display: block; }
+
+@media (max-width: 900px) {
+  .lightbox { padding: 20px; }
+  .lightbox-prev { left: 4px; }
+  .lightbox-next { right: 4px; }
+  .lightbox-close { top: -44px; right: 0; }
+  .lightbox-counter { bottom: -32px; }
+}
+
+.empty-note {
+  font-family: var(--font-body);
+  color: var(--gray);
+  font-size: 16px;
+  padding: 4px 4px 8px;
+}
+
+/* ---------------------------------------------------------------------
+   RESUME PAGE
+--------------------------------------------------------------------- */
+.resume-box {
+  border: var(--border-thick) solid var(--black);
+  border-radius: var(--box-radius);
+  padding: 20px;
+  margin-bottom: 60px;
+}
+.resume-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.download-btn {
+  font-family: var(--font-display);
+  font-size: 24px;
+  background: var(--black);
+  color: var(--white);
+  border: var(--border-thick) solid var(--black);
+  border-radius: 999px;
+  padding: 10px 30px 12px;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.download-btn:hover {
+  background: var(--white);
+  color: var(--black);
+  transform: translateY(-3px);
+}
+.resume-embed {
+  width: 100%;
+  height: 80vh;
+  border: 2px solid var(--black);
+  border-radius: 10px;
+  background: var(--light-gray);
+}
+
+/* ---------------------------------------------------------------------
+   FOOTER
+--------------------------------------------------------------------- */
+footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--gray);
+  font-family: var(--font-body);
+  font-size: 14px;
+}

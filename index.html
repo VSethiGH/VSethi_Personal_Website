@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varun Sethi — Portfolio</title>
+<script>
+  // Apply the saved light/dark choice immediately, before the page paints,
+  // so there's no flash of the wrong colors.
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-left"></div>
+
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <svg class="bulb-icon" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+        <g class="bulb-base"><rect x="13" y="33" width="14" height="11" rx="2"/></g>
+        <line class="bulb-base-line" x1="13" y1="37" x2="27" y2="37"/>
+        <line class="bulb-base-line" x1="13" y1="41" x2="27" y2="41"/>
+        <circle class="bulb-glass" cx="20" cy="19" r="15"/>
+        <path class="bulb-filament" d="M14 15 L20 25 L26 15"/>
+      </svg>
+    </button>
+
+    <div class="topbar-right">
+      <a class="icon-link" href="https://www.linkedin.com/in/vsethi-in/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="icon-link" href="mailto:varunsethiemail@gmail.com">Email Me</a>
+      <a class="icon-link" href="https://github.com/VSethiGH" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+
+  <main class="home-main wrap">
+
+
+    <div class="face-frame">
+      <img src="assets/face.jpg" alt="A photo of me">
+      <div class="face-placeholder" style="display:none;">
+        Add your photo!<br>Save it as <code>assets/face.jpg</code>
+      </div>
+    </div>
+
+    <h1 class="home-title wobble">Varun Sethi</h1>
+    <p class="home-subtitle">Clemson Computer Science Graduate Student, Graduating May 2027</p>
+
+    <div class="home-boxes">
+      <a class="home-box" href="about.html">About Me</a>
+      <a class="home-box" href="projects.html">Projects</a>
+      <a class="home-box" href="resume.html">Resume</a>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

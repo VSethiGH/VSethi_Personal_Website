@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Me — Varun Sethi</title>
+<script>
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark-mode');
+  }
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+  <div class="topbar">
+    <div class="topbar-left">
+      <a class="back-arrow" href="index.html">&larr; Home</a>
+      <a class="nav-pill active" href="about.html">About Me</a>
+      <a class="nav-pill" href="projects.html">Projects</a>
+      <a class="nav-pill" href="resume.html">Resume</a>
+    </div>
+ 
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <svg class="bulb-icon" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+        <g class="bulb-base"><rect x="13" y="33" width="14" height="11" rx="2"/></g>
+        <line class="bulb-base-line" x1="13" y1="37" x2="27" y2="37"/>
+        <line class="bulb-base-line" x1="13" y1="41" x2="27" y2="41"/>
+        <circle class="bulb-glass" cx="20" cy="19" r="15"/>
+        <path class="bulb-filament" d="M14 15 L20 25 L26 15"/>
+      </svg>
+    </button>
+ 
+    <div class="topbar-right">
+      <a class="icon-link" href="https://www.linkedin.com/in/vsethi-in/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="icon-link" href="mailto:varunsethiemail@gmail.com">Email Me</a>
+      <a class="icon-link" href="https://github.com/VSethiGH" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+
+
+  <main class="wrap">
+    <div class="page-header">
+      <h1 class="wobble">About Me</h1>
+      <p>A little bit about who I am.</p>
+    </div>
+
+    <!-- Each box below is fully independent — copy/paste one to add a new
+         box, or delete a whole <div class="about-box">...</div> to remove one. -->
+    <div class="about-grid">
+
+      <div class="about-box">
+        <div class="about-box-title">Profile</div>
+        <div class="about-box-body">
+          <p> 
+            I am Varun Sethi, a current Graduate student at Clemson University studying Computer Science. 
+            I am interested in Machine Learning, Computer Vision, and Physical AI. 
+            My interests include playing video games, going to the gym, and getting into shenanigans. 
+            This webpage will give you a quick overview of who I am, check out my projects and resume for more!
+            </p>
+        </div>
+      </div>
+
+            <div class="about-box">
+        <div class="about-box-title">Job Progression</div>
+        <div class="about-box-body">
+          <!-- EDIT ME -->
+           <p>TD SYNNEX, Technical Scholar II: May, 2026 - Present</p>
+           <p>Computer Organization Teaching Assistant: Fall 2026</p>
+          <p>Data Structures & Algorithms Teaching Assistant: 2024 - 2025</p>
+          <p>Clemson REU Research Assistant: Summer, 2024</p>
+          <p>GSSM Resident GoSciTech Camp Helper: Summer, 2023</p>
+          <p>GSSM x Clemson SPRI Summer Research: Summer, 2022</p>
+          
+
+        </div>
+      </div>
+
+      <div class="about-box">
+        <div class="about-box-title">Graduate School</div>
+        <div class="about-box-body">
+          <p><strong>Clemson University</strong><br>
+          Computer Science — Class of 2027<br>
+          GPA: TBD</p>
+         
+        </div>
+      </div>
+
+        <div class="about-box">
+        <div class="about-box-title">Undergraduate School</div>
+        <div class="about-box-body">
+          <p><strong>Clemson University</strong><br>
+          Computer Science — Class of 2026<br>
+          GPA: 3.86/4.0, Magna Cum Laude<br>
+          General + Departmental Honors </p>
+
+          <ul>
+            <li>Minor: Artificial Intelligence</li>
+            <li>Graduated a year earlier</li>
+          </ul></p>
+
+          Extracurricular Activties:
+          <ul>
+            <li>CUhackit - Head of Partnerships</li>
+            <li>Deparmental Honors Research - Leveraging Multilayer Perceptrons to compute Gradients for Identifying Genes Associated with Breast Cancer</li>
+            <li>Clemson Undergraduate Student Government, Floor Senator - Inclusion & Equity and Student Life Committee</li>
+            <li>Teaching Assitant - Computer Organization and Data Structures & Algorithms</li>
+            <li>Clemson Quantum Club - General Member + Personal Relationships for Quantum Hackathon</li>
+          </ul></p>
+
+          Accolades
+          <ul>
+            <li>SC Life Scholarship</li>
+            <li>William P Clyburn Memorial Scholarship</li>
+            <li>1st Place - 2026 HackMIT Suno Challenge</li>
+            <li>3rd Place - 2025 MIT iQuHack Alice & Bob Challenge</li>
+            <li>6 Semesters - Dean's List</li>
+          </ul>
+
+        </div>
+      </div>
+
+      <div class="about-box">
+        <div class="about-box-title">High School</div>
+        <div class="about-box-body">
+          <!-- EDIT ME -->
+          <p><strong>SC Governor's School for Science and Mathematics</strong><br>
+          Class of 2023<br>
+          GPA: 3.739 / 4.0</p>
+          Extracurricular Activties:
+          <ul>
+            <li>FTC Robotics, Team 22972 - Computer Science Lead</li>
+            <li>Disc Golf - Personal Relationship Head</li>
+            <li>Tennis Club - General Player</li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="about-box">
+        <div class="about-box-title">Skills</div>
+        <div class="about-box-body">
+          <!-- EDIT ME -->
+          <ul>
+            <li>Languages: Python, C, C++, SQL, MATLAB, HTML/CSS</li>
+            <li>Tools: Git / GitHub, Linux, Microsoft 365, VSCode, PostgreSQL, Prolog, Azure, AWS</li>
+            <li>Math: Calculus, Multi-Variable, Linear Algebra, Statistics, Discrete Structures</li>
+            <li>CompSci Skills: Data Structures & Algorithms, Agile, Scrum, PyTorch, OpenCV, Pandas, Data Annotation, Qiskit</li>
+            <li>Certifications: AWS Cloud Practitioner</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="about-box">
+        <div class="about-box-title">Hobbies &amp; Interests</div>
+        <div class="about-box-body">
+          <!-- EDIT ME -->
+          <p>
+            <ul>
+              <li>Video Games (love indie games)</li>
+              <li>Gym</li>
+              <li>Music</li>
+              <li>Thrifting / Vintage Shopping</li>
+              <li>Yapping</li>
+              <li>Hackathons</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+
+      <div class="about-box">
+        <div class="about-box-title">Fun Fact</div>
+        <div class="about-box-body">
+          <!-- EDIT ME -->
+          <p>I have watched all of One Piece</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+
+  <script src="script.js"></script>
+</body>
+</html>
