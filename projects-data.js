@@ -72,48 +72,36 @@ const employedProjects = [
 
 {
   title: "Computer Organization Teaching Assistant",
-  meta: "Clemson: Fall, 2026",
-  description: "...",
-  media: {
-    type: "none"
-  }
+  meta: "Clemson: Spring 2025, Fall 2026",
+  description: "CPSC 2310 Computer Organization - Dr. Yvon Feaster <br><br> Each week, I led 1-hour in-person office hours and two 1-hour lab sessions. As a TA, I helped students with assigned labs, graded coursework, and explained core computer science concepts. <br><br> Concepts: C/C++, Linked Lists, Pointers, Memory Allocation, PPM, Assembly <br><br> Learned Skills: Teaching",
+  media: { type: "image", src: "assets/projects/Clemson.png"}
+   
 },
 
 {
   title: "Data Structures & Algorithms Teaching Assistant",
-  meta: "Clemson: 2024 - 2025",
+  meta: "Clemson: Fall 2024",
   description: "...",
-  media: {
-    type: "none"
-  }
+  media: { type: "image", src: "assets/projects/Clemson.png"}
 },
 
 {
   title: "Clemson Virtual Reality REU Research Assistant: Summer",
   meta: "Clemson: Summer, 2024",
   description: "...",
-  media: {
-    type: "none"
-  }
+  media: { type: "image", src: "assets/projects/Clemson.png"}
 },
 
 {
   title: "GSSM Resident GoSciTech Camp Helper",
   meta: "Clemson: Summer, 2023",
-  description: "...",
-  media: {
-    type: "none"
+  description: "GoSciTech Residential is a week-long residential summer camp, serving rising 8th, 9th and 10th graders, hosted at GSSM. It provides students unmatched opportunities to explore science and technology while living on their campus. As a Residential Helper, I supported campers in Build a PC and Web Design sessions while helping create a safe and welcoming residential environment. I also organized icebreakers and activities to help campers connect, feel comfortable, and stay engaged throughout the program. <br><br> Skills Learned: Indepndence, Empathy, Teaching, HTML, CSS",
+    media: {
+    type: "image",
+    src: "assets/projects/GoSciTech.png"
   }
 },
 
-{
-  title: "GSSM x Clemson Virtual Reality SPRI Summer Research",
-  meta: "Clemson: Summer, 2022",
-  description: "...",
-  media: {
-    type: "none"
-  }
-},
   // Add more work projects below, following the same format:
   // {
   //   title: "Project Name",
@@ -235,6 +223,16 @@ const personalProjects = [
     }
   },
 
+  {
+    title: "Personal Website",
+    meta: "Wow! You are here right now.",
+    description: "<hre",
+    media: {
+      type: "image",
+      src: "assets/projects/ThumbsUp.jpg"
+    }
+  },
+
   // Add more personal projects below:
   // {
   //   title: "Project Name",
@@ -247,7 +245,7 @@ const personalProjects = [
 const awards = [
   {
     title: "Amazon Web Services Cloud Practitioner Certification (CFL-02)",
-    meta: "Achived July 2026",
+    meta: "Achieved July 2026",
     description: "The AWS Certified Cloud Practitioner (CLF-C02) exam is intended for individuals who can effectively demonstrate overall knowledge of the AWS Cloud, independent of a specific job role.",
     media: { type: "image", src: "assets/projects/aws.jpg"}
   },
@@ -296,6 +294,7 @@ const awards = [
    on the page, keyed by a unique id. script.js reads from this when the
    lightbox needs to know what to show full-size.
 --------------------------------------------------------------------- */
+
 window.mediaLibrary = {};
 let mediaCounter = 0;
  
@@ -354,32 +353,81 @@ function mediaHTML(media) {
   return `<div class="media-placeholder">Add a photo, screenshot, video, or slides here</div>`;
 }
  
-function cardHTML(project) {
-  return `
-    <div class="project-card">
-      <div class="project-text">
-        <h3>${project.title}</h3>
-        ${project.meta ? `<div class="project-meta">${project.meta}</div>` : ""}
-        <p>${project.description}</p>
-      </div>
-      <div class="project-media">
-        ${mediaHTML(project.media)}
-      </div>
-    </div>`;
-}
+function renderSection(prefix, list) {
+  const container = document.getElementById(`panel-${prefix}`);
+  if (!container) return;
  
-function renderSection(panelId, list) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return;
   if (!list || list.length === 0) {
-    panel.innerHTML = `<div class="empty-note">Nothing here yet — add an entry in projects-data.js.</div>`;
+    container.innerHTML = `<div class="empty-note">Nothing here yet — add an entry in projects-data.js.</div>`;
     return;
   }
-  panel.innerHTML = list.map(cardHTML).join("");
+ 
+  // Left column: just a title + pointing-hand cursor per item, per the
+  // "keep the list simple" request. Right column: full detail panel that
+  // fills in when an item is clicked.
+  const listHTML = list
+    .map(
+      (project, i) => `
+      <button class="project-list-item" data-index="${i}" type="button">
+        <span class="pointer-icon" aria-hidden="true">&#128073;</span>
+        <span class="project-list-title">${project.title}</span>
+      </button>`
+    )
+    .join("");
+ 
+  container.innerHTML = `
+    <div class="project-split">
+      <div class="project-list">${listHTML}</div>
+      <div class="project-detail">
+        <button class="detail-close" type="button" aria-label="Close">&times;</button>
+        <div class="detail-placeholder">
+          <span class="pointer-icon big" aria-hidden="true">&#128073;</span>
+          <p>Pick a project on the left to see the details.</p>
+        </div>
+      </div>
+    </div>`;
+ 
+  const listEl = container.querySelector(".project-list");
+  const detailEl = container.querySelector(".project-detail");
+ 
+  function showProject(i) {
+    const project = list[i];
+ 
+    listEl.querySelectorAll(".project-list-item").forEach((btn) => {
+      btn.classList.toggle("active", Number(btn.dataset.index) === i);
+    });
+ 
+    detailEl.innerHTML = `
+      <button class="detail-close" type="button" aria-label="Close">&times;</button>
+      <h3>${project.title}</h3>
+      ${project.meta ? `<div class="project-meta">${project.meta}</div>` : ""}
+      <div class="detail-media">${mediaHTML(project.media)}</div>
+      <p class="detail-description">${project.description}</p>`;
+ 
+    detailEl.classList.add("open");
+    detailEl.querySelector(".detail-close").addEventListener("click", () => {
+      detailEl.classList.remove("open");
+    });
+  }
+ 
+  listEl.querySelectorAll(".project-list-item").forEach((btn) => {
+    btn.addEventListener("click", () => showProject(Number(btn.dataset.index)));
+  });
+ 
+  detailEl.querySelector(".detail-close").addEventListener("click", () => {
+    detailEl.classList.remove("open");
+  });
+ 
+  // On wider screens the detail panel sits inline, so pre-select the
+  // first project rather than showing an empty panel. On narrow screens
+  // the panel is a full-screen popup, so leave it closed until tapped.
+  if (window.matchMedia("(min-width: 701px)").matches) {
+    showProject(0);
+  }
 }
  
 document.addEventListener("DOMContentLoaded", () => {
-  renderSection("panel-employed", employedProjects);
-  renderSection("panel-personal", personalProjects);
-  renderSection("panel-awards", awards);
+  renderSection("employed", employedProjects);
+  renderSection("personal", personalProjects);
+  renderSection("awards", awards);
 });

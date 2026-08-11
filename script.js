@@ -25,8 +25,21 @@ function initWobbleText() {
 function initAccordion() {
   document.querySelectorAll('.accordion-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
-      btn.parentElement.classList.toggle('open');
+      const section = btn.parentElement;
+      const wasOpen = section.classList.contains('open');
+      section.classList.toggle('open');
+      // If we just collapsed this section, also close any project detail
+      // popup left open inside it (relevant on mobile).
+      if (wasOpen) {
+        section.querySelectorAll('.project-detail.open').forEach((d) => d.classList.remove('open'));
+      }
     });
+  });
+
+  // Escape closes an open mobile detail popup, same as the lightbox.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.project-detail.open').forEach((d) => d.classList.remove('open'));
   });
 }
 
