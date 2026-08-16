@@ -1,12 +1,6 @@
-/* =========================================================================
-   SHARED SITE SCRIPT
-   1) Wraps any element with class="wobble" into per-letter <span>s so the
-      CSS "bob" animation can stagger each letter (OMORI-style title wiggle).
-   2) Handles the Projects page accordion open/close.
-   3) Shows a friendly placeholder if the face photo hasn't been added yet.
-   ========================================================================= */
 
-// ---- 1. Letter wobble ----------------------------------------------------
+
+// wobble ----------------------------------------------------
 function initWobbleText() {
   document.querySelectorAll('.wobble').forEach((el) => {
     const text = el.textContent;
@@ -21,7 +15,7 @@ function initWobbleText() {
   });
 }
 
-// ---- 2. Accordion (Projects page) ----------------------------------------
+// Accordion (Projects page) ----------------------------------------
 function initAccordion() {
   document.querySelectorAll('.accordion-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -43,7 +37,7 @@ function initAccordion() {
   });
 }
 
-// ---- 3. Face photo placeholder fallback -----------------------------------
+// Face photo placeholder fallback -----------------------------------
 function initFaceFallback() {
   const img = document.querySelector('.face-frame img');
   const placeholder = document.querySelector('.face-placeholder');
@@ -54,7 +48,7 @@ function initFaceFallback() {
   });
 }
 
-// ---- 4. Lightbox (click-to-zoom for images / videos / slide decks) -------
+// Lightbox  -------
 function initLightbox() {
   const lightbox = document.getElementById('lightbox');
   if (!lightbox) return; // only present on projects.html
@@ -121,10 +115,6 @@ function initLightbox() {
         counter.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
 
       } else if (currentMedia.type === 'pptx' && currentMedia.src) {
-        // No exported slides — show the REAL PowerPoint via Microsoft's
-        // free online viewer. Only works once this site is published at a
-        // real web address (GitHub Pages, Netlify, etc.) — it can't reach
-        // a file that's only sitting on your own computer.
         const fullUrl = new URL(currentMedia.src, window.location.href).href;
         const viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fullUrl)}`;
         body.innerHTML = `
@@ -182,8 +172,7 @@ function initLightbox() {
     render();
   }
 
-  // Open when any thumbnail (current or future — accordions render after
-  // this runs) is clicked, via event delegation on the whole document.
+  // Open when any thumbnail (current or future — accordions render after this runs) is clicked, via event delegation on the whole document.
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('.media-trigger');
     if (trigger) open(trigger.dataset.mediaId);
@@ -211,7 +200,7 @@ function initLightbox() {
   nextBtn.addEventListener('click', nextSlide);
 }
 
-// ---- 5. Lightbulb (light/dark mode toggle) --------------------------------
+// Lightbulb (light/dark mode toggle) --------------------------------
 function initThemeToggle() {
   const btn = document.getElementById('theme-toggle');
   if (!btn) return;
@@ -221,10 +210,176 @@ function initThemeToggle() {
   });
 }
 
+// ---- 6. Project search (Projects page) ------------------------------------
+function initProjectSearch() {
+  const input = document.getElementById('project-search');
+  const noResults = document.getElementById('search-no-results');
+  if (!input) return; // only present on projects.html
+
+  const sections = Array.from(document.querySelectorAll('.accordion-section'));
+
+  input.addEventListener('input', () => {
+    const query = input.value.trim().toLowerCase();
+    let anyMatchAnywhere = false;
+
+    sections.forEach((section) => {
+      const items = Array.from(section.querySelectorAll('.project-list-item'));
+      let sectionHasMatch = false;
+
+      items.forEach((item) => {
+        const matches = query === '' || (item.dataset.search || '').includes(query);
+        item.style.display = matches ? '' : 'none';
+        if (matches) sectionHasMatch = true;
+      });
+
+      if (query === '') {
+        // Search cleared — restore normal visibility. Only auto-close a
+        // section if WE were the ones who forced it open during a search.
+        section.style.display = '';
+        if (section.dataset.searchOpened === 'true') {
+          section.classList.remove('open');
+          delete section.dataset.searchOpened;
+        }
+      } else {
+        section.style.display = sectionHasMatch ? '' : 'none';
+        if (sectionHasMatch) {
+          anyMatchAnywhere = true;
+          if (!section.classList.contains('open')) {
+            section.classList.add('open');
+            section.dataset.searchOpened = 'true';
+          }
+        }
+      }
+    });
+
+    if (noResults) {
+      noResults.style.display = query !== '' && !anyMatchAnywhere ? 'block' : 'none';
+    }
+  });
+}
+
+// Secret
+function initBadAppleEasterEgg() {
+  const bulb = document.getElementById('theme-toggle');
+  if (!bulb) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'secret-overlay';
+  overlay.innerHTML = `
+    <canvas class="secret-canvas"></canvas>
+    <video class="secret-video-source" src="assets/badapple.mp4" loop playsinline></video>
+    <p class="secret-hint">click anywhere or press Esc to exit</p>
+  `;
+  document.body.appendChild(overlay);
+
+  const canvas = overlay.querySelector('.secret-canvas');
+  const ctx = canvas.getContext('2d');
+  const video = overlay.querySelector('.secret-video-source');
+
+  // Tiny offscreen canvas: the video gets drawn shrunk down to exactly
+  // one pixel per character cell, so reading its pixel data gives us a
+  // cheap "average brightness per cell" for the whole frame at once.
+  const sampleCanvas = document.createElement('canvas');
+  const sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+
+  const CHARS = ' .:-=+*#%@'; // dark -> light. Edit this string to change the "shading" style.
+  const CELL = 9; // pixels per character on screen — smaller = more detail, more work for the browser
+
+  let rafId = null;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+
+  function drawFrame() {
+    if (!overlay.classList.contains('open')) return;
+
+    const cols = Math.max(1, Math.floor(canvas.width / CELL));
+    const rows = Math.max(1, Math.floor(canvas.height / CELL));
+
+    if (sampleCanvas.width !== cols || sampleCanvas.height !== rows) {
+      sampleCanvas.width = cols;
+      sampleCanvas.height = rows;
+    }
+
+    sampleCtx.drawImage(video, 0, 0, cols, rows);
+
+    let pixels;
+    try {
+      pixels = sampleCtx.getImageData(0, 0, cols, rows).data;
+    } catch (err) {
+      // Most likely cause: testing via file:// instead of a local server.
+      // Reading pixel data needs the page served over http(s) — see the
+      // note in projects-data.js about running `python3 -m http.server`.
+      console.warn('Could not read video frame data:', err.message);
+      rafId = requestAnimationFrame(drawFrame);
+      return;
+    }
+
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `${CELL}px monospace`;
+    ctx.textBaseline = 'top';
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const idx = (y * cols + x) * 4;
+        const brightness = (pixels[idx] * 0.299 + pixels[idx + 1] * 0.587 + pixels[idx + 2] * 0.114) / 255;
+        const ch = CHARS[Math.min(CHARS.length - 1, Math.floor(brightness * CHARS.length))];
+        if (ch !== ' ') {
+          ctx.fillStyle = `rgba(255,255,255,${0.35 + brightness * 0.65})`;
+          ctx.fillText(ch, x * CELL, y * CELL);
+        }
+      }
+    }
+
+    rafId = requestAnimationFrame(drawFrame);
+  }
+
+  function open() {
+    overlay.classList.add('open');
+    resizeCanvas();
+    video.currentTime = 0;
+    video.muted = false;
+    video.play().catch(() => {
+      // Browsers sometimes block audio autoplay — fall back to muted so
+      // the visual still works even if sound doesn't kick in immediately.
+      video.muted = true;
+      video.play().catch(() => {});
+    });
+    rafId = requestAnimationFrame(drawFrame);
+  }
+  function close() {
+    overlay.classList.remove('open');
+    video.pause();
+    if (rafId) cancelAnimationFrame(rafId);
+  }
+
+  overlay.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+
+  let clickTimes = [];
+  bulb.addEventListener('click', () => {
+    const now = Date.now();
+    clickTimes = clickTimes.filter((t) => now - t < 2500);
+    clickTimes.push(now);
+    if (clickTimes.length >= 7) {
+      clickTimes = [];
+      open();
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initWobbleText();
   initAccordion();
   initFaceFallback();
   initLightbox();
   initThemeToggle();
+  initProjectSearch();
+  initBadAppleEasterEgg();
 });
