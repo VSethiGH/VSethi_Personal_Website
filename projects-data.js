@@ -93,8 +93,7 @@ description: "Research Advisors: Dr. Alex Feltus & Dr. Siyu Huang <br> Course Co
     type: "pptx",
     src: "assets/projects/Capgemini_Senior_Capstone_Project.pptx",
     slides: makeSlides(
-      "assets/projects/Capgemini_Senior_Capstone_Project",
-      10
+      "assets/projects/Capgemini_Senior_Capstone_Project", 10
     )
   }
 },
@@ -136,7 +135,11 @@ description: "For CPSC 4420/6420, my partner and I developed a chatbot for Clems
   title: "Guilty Gear Strive AI Bot",
   meta: "Personal Project - Summer 2025",
 description: "Guilty Gear Strive is a 2D fighting game where players choose from a variety of characters and face off against an opponent. After repeatedly losing to my friends online, I decided to build a machine learning bot that could play the game for me. <br><br> To do this, I first needed the model to understand the current state of the match. I used OpenCV to track important game information such as health, tension, and burst. Since these gauges always appear in fixed locations, I created bounding boxes around each one and processed the image to estimate how much of each gauge was filled. For example, as the health bar decreased, the amount of detected color inside the box would also decrease, allowing me to estimate the remaining health as a percentage. <br><br> I also needed the model to know where both players were on the screen. I trained a custom YOLOv8 computer vision model using character sprites from the game, allowing it to detect both fighters and create bounding boxes around them. From these detections, I calculated the distance between the two characters and added that value to the game state. <br><br> Next, I defined the actions the model could take. Guilty Gear has a large number of possible inputs, including kicks, slashes, heavy attacks, movement, and directional combinations such as quarter-circle and half-circle inputs. To keep the project manageable, I focused on a single character and created a set of possible actions the model could perform. I also connected the program to keyboard controls so the bot could directly execute these inputs in-game. <br><br> I structured the project as a reinforcement learning environment using Gym, where the model receives the current game state, selects an action, and receives a reward based on the result. The main objective was to keep the bot's health above zero while learning which actions performed best in different situations. I also added the ability to save the current model and either continue training from an existing run or start over from scratch. <br><br> The biggest limitation was training time. Since I could not run many games in parallel or speed up the game environment, the model required more training than I could realistically provide. Because of this, I treated the project as an experimental reinforcement learning system rather than a fully trained competitive bot. <br><br> Will create a video one day, I need to reinstall the game <br><br> Concepts: Computer Vision, Reinforcement Learning, Object Detection, Game State Modeling, Reward Functions, Image Processing, Automation <br><br> Skills: Python, OpenCV, YOLOv8, GymAI",  
-    media: { type: "image", src: "assets/projects/noimage.jpg"}
+    media: {
+    type: "pptx",
+    src: "assets/projects/GGST_PROJECT.pptx",
+    slides: makeSlides("assets/projects/GGST_PROJECT", 12)
+  }
 
 },
 
